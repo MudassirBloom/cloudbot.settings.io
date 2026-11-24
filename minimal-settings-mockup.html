@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f5f7f4">
+<title>Settings — minimal proposal · SpeedMaster CloudBot</title>
+<style>
+/* Self-contained review prototype. Tokens copied from public/styles.css so the
+   proposal matches the shipped app theme (green #126b4c, white 16px panels, Arial). */
+:root{
+  font-family:Arial,Helvetica,sans-serif;color:#18241f;background:#f5f7f4;
+  --green:#126b4c;--line:#e3e9e4;--muted:#738078;--ink:#18241f;
+  --danger:#9b372b;--danger-bg:#fff0ed;--danger-line:#f3d9d2;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg,#f5f7f4);color:var(--ink);font-size:13px}
+h1,h2,h3{margin:0;letter-spacing:-.035em}
+h1{font-size:30px;line-height:1.2}
+h2{font-size:19px;line-height:1.25}
+p{margin:0}
+button{font:inherit}
+
+.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1240px)/2));background:#fff;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;color:var(--ink)}
+.brand small{display:block;margin-top:1px;color:var(--muted);font-size:9px;letter-spacing:.14em;font-weight:700}
+.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:#e5f4ec;color:var(--green);font-size:19px;font-weight:800}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.identity{font-size:12px;color:var(--muted)}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:8px;padding:10px 14px;min-height:38px;text-decoration:none;font:600 12px Arial,sans-serif;cursor:pointer;white-space:nowrap}
+.button:disabled{opacity:.45;cursor:not-allowed}
+.primary{color:#fff;background:var(--green)}
+.secondary{color:var(--green);background:#e9f4ee}
+.quiet{color:#42564a;background:#edf1ed}
+.danger-btn{color:#fff;background:#b23a2c}
+.button:focus-visible,.chip button:focus-visible,.settings-tab:focus-visible{outline:2px solid #56a17e;outline-offset:2px}
+
+.shell{max-width:1240px;margin:0 auto;padding:30px 24px 40px}
+.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.eyebrow{margin:0 0 8px;color:var(--green);font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.subtitle{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.55}
+.account-state{display:inline-flex;align-items:center;gap:7px;border:1px solid #cfe2d7;background:#eef7f2;color:#0f4f38;border-radius:20px;padding:7px 13px;font-size:11px;font-weight:700;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:#2f9e6f;display:inline-block;flex:0 0 auto}
+
+.settings-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.settings-tab{border:1px solid var(--line);background:#fff;color:#516357;border-radius:9px;padding:11px 18px;font:600 13px Arial,sans-serif;cursor:pointer}
+.settings-tab.active{background:var(--green);border-color:var(--green);color:#fff}
+.settings-tab:hover:not(.active){border-color:#b9cdc1}
+
+.context-note{margin:-4px 0 16px;color:var(--muted);font-size:11px;line-height:1.55}
+.flash{margin:0 0 16px;padding:11px 14px;border:1px solid #cfe2d7;border-radius:10px;background:#eef7f2;color:#0f4f38;font-size:12px;font-weight:600}
+.flash.error{background:var(--danger-bg);border-color:var(--danger-line);color:var(--danger)}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:0 5px 22px #1b422109;margin-bottom:18px}
+.section-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.section-heading p{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.55;max-width:70ch}
+.divider{border-top:1px solid var(--line);margin:20px 0}
+
+.grid{display:grid;gap:16px 18px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+label.field{display:grid;gap:7px;font-size:12px;font-weight:700}
+label.field input{width:100%}
+.field-help{display:block;color:var(--muted);font-size:11px;font-weight:400;line-height:1.5}
+.field-error{display:block;color:var(--danger);font-size:11px;font-weight:700}
+input,select,textarea{font:inherit;color:var(--ink);border:1px solid #d8e1db;border-radius:8px;background:#fff;padding:10px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#56a17e;box-shadow:0 0 0 3px #17815718}
+textarea{width:100%;resize:vertical;line-height:1.55}
+.mini-note{color:var(--muted);font-size:11px;line-height:1.55;margin-top:10px}
+
+/* switch */
+.switch-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:12px;cursor:pointer;font-weight:400}
+.switch-copy{display:grid;gap:4px;min-width:0}
+.switch-copy strong{font-size:13px;font-weight:700}
+.switch-copy small{color:var(--muted);font-size:11px;line-height:1.5;font-weight:400}
+.inline-number{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;margin-top:6px;flex-wrap:wrap}
+.inline-number input{width:72px;padding:7px 9px}
+.months-pair{display:inline-flex;align-items:center;gap:6px;font-weight:400}
+.switch{position:relative;display:inline-flex;flex:0 0 auto;width:42px;height:24px;margin-top:2px}
+.switch input{position:absolute;opacity:0;width:1px;height:1px;padding:0;margin:0;border:0}
+.switch-track{display:block;width:42px;height:24px;border-radius:999px;background:#cbd5ce;transition:background .15s ease;position:relative}
+.switch-track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0b221633;transition:transform .15s ease}
+.switch input:checked + .switch-track{background:var(--green)}
+.switch input:checked + .switch-track::after{transform:translateX(18px)}
+.switch input:focus-visible + .switch-track{box-shadow:0 0 0 3px #17815733}
+
+/* verification tiles */
+.check-card{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:10px;padding:14px 15px;cursor:pointer;font-weight:400}
+.check-card .switch-copy small{min-height:32px}
+
+/* segmented */
+.segmented{display:inline-flex;gap:4px;flex-wrap:wrap;background:#f2f5f2;border:1px solid var(--line);border-radius:10px;padding:4px;margin-top:2px}
+.segment{position:relative;display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border-radius:8px;color:#516357;font-size:12px;font-weight:600;cursor:pointer}
+.segment input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.segment:has(input:checked){background:#fff;color:var(--green);box-shadow:0 1px 4px #1b422114}
+.segment:has(input:focus-visible){outline:2px solid #56a17e;outline-offset:1px}
+
+/* threshold */
+.threshold-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.threshold-row input[type=range]{flex:1;min-width:180px;accent-color:var(--green);padding:0;background:transparent;border:0;box-shadow:none}
+.threshold-row input[type=number]{width:88px}
+.threshold-unit{font-size:13px;font-weight:700;color:var(--muted)}
+
+/* danger */
+.danger-card{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--danger-bg);border:1px solid var(--danger-line);border-radius:16px;padding:20px 24px;margin-bottom:18px}
+.danger-card strong{color:var(--danger);font-size:14px}
+.danger-card p{margin-top:5px;color:#8a4a40;font-size:12px;line-height:1.55;max-width:62ch}
+.danger-side{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.state-pill{border:1px solid #f0cfc7;background:#fff;color:var(--danger);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:700;white-space:nowrap}
+
+/* keyword chips */
+.list-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.list-toolbar input{flex:1;min-width:180px}
+.list-toolbar .count{color:var(--muted);font-size:11px;font-weight:700;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid #d5e3da;background:#f4f8f5;color:#1c4b39;border-radius:999px;padding:6px 8px 6px 12px;font-size:12px;font-weight:600;max-width:100%}
+.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip button{border:0;background:transparent;color:#7d8e84;cursor:pointer;font-size:15px;line-height:1;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;padding:0}
+.chip button:hover{background:#e3ece6;color:var(--danger)}
+.chip.block{background:#fff5f2;border-color:#f0d5cc;color:#8a4436}
+.chip.block button:hover{background:#fbe4dd}
+.chips.scroll{max-height:196px;overflow:auto;padding:2px;margin:12px -2px 0}
+.empty-hint{border:1px dashed #d8e1db;border-radius:10px;padding:16px;text-align:center;color:var(--muted);font-size:12px;margin-top:12px}
+
+.entry-row{display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;margin-top:10px}
+.entry-row input{flex:1;min-width:170px}
+.entry-row textarea{flex:1;min-width:220px}
+
+.count-pill{font-size:11px;font-weight:700;color:var(--muted);background:#f4f6f4;border:1px solid var(--line);border-radius:20px;padding:5px 11px;white-space:nowrap}
+
+/* save bar */
+.save-bar{position:sticky;bottom:14px;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:0 10px 28px #1b422118;margin-top:6px}
+.save-state{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--muted)}
+.save-state strong{color:var(--ink);font-size:12px}
+.save-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.prototype-note{margin:22px 0 0;text-align:center;font-size:11px;color:var(--muted);line-height:1.6}
+
+@media(max-width:980px){
+  .grid.three{grid-template-columns:1fr 1fr}
+  .grid.three>*:last-child{grid-column:1/-1}
+}
+@media(max-width:760px){
+  .grid.three,.grid.two{grid-template-columns:1fr}
+  .grid.three>*:last-child{grid-column:auto}
+  .settings-tabs{display:grid;grid-template-columns:repeat(3,1fr)}
+  .settings-tab{text-align:center;padding:11px 8px}
+  .save-bar{position:static}
+}
+@media(max-width:560px){
+  .topbar{height:62px;padding:0 16px}
+  .identity{display:none}
+  .shell{padding:22px 14px 32px}
+  .panel{padding:18px;border-radius:13px}
+  h1{font-size:26px}
+  .danger-card{padding:18px}
+  .danger-card .button{width:100%}
+  .threshold-row input[type=number]{width:74px}
+  .segmented{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .segment{justify-content:center;text-align:center}
+  .list-toolbar input{min-width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">S</span>
+    <span>SpeedMaster <small>CLOUDBOT · MULTI-ACCOUNT PILOT</small></span>
+  </div>
+  <div class="topbar-right">
+    <span class="identity">ops@example.com</span>
+    <button class="button quiet" type="button">Sign out</button>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="page-head">
+    <div>
+      <p class="eyebrow">Account settings</p>
+      <h1>Settings</h1>
+      <p class="subtitle">Configuration for BCS · +91 ••••• 43210</p>
+    </div>
+    <span class="account-state"><span class="dot"></span>Account stopped</span>
+  </div>
+
+  <nav class="settings-tabs" role="tablist" aria-label="Settings sections">
+    <button class="settings-tab active" id="tab-buying" type="button" role="tab" aria-selected="true" aria-controls="panel-buying" data-tab="buying">Buying</button>
+    <button class="settings-tab" id="tab-matching" type="button" role="tab" aria-selected="false" aria-controls="panel-matching" data-tab="matching" tabindex="-1">Matching</button>
+    <button class="settings-tab" id="tab-monitoring" type="button" role="tab" aria-selected="false" aria-controls="panel-monitoring" data-tab="monitoring" tabindex="-1">Monitoring</button>
+  </nav>
+
+  <p class="context-note">Switches on Monitoring apply immediately. Purchase and matching changes save with the button below.</p>
+
+  <p id="flash" class="flash" hidden role="status"></p>
+
+  <!-- ============================= BUYING ============================= -->
+  <section id="panel-buying" role="tabpanel" aria-labelledby="tab-buying">
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Purchase limits</h2>
+          <p>How many leads this account may buy, and how small a lead may be.</p>
+        </div>
+      </div>
+
+      <div class="grid three">
+        <label class="field">Minimum quantity
+          <input id="min-quantity" data-draft type="number" min="0" max="1000000" step="1" value="25" inputmode="numeric">
+          <span class="field-help">Skip leads that state less than this. 0 = no minimum.</span>
+        </label>
+        <label class="field">Max leads per session
+          <input id="session-cap" data-draft type="number" min="0" max="1000" step="1" value="3" inputmode="numeric">
+          <span class="field-help">Stop after this many buys in one Start. 0 = no limit.</span>
+        </label>
+        <label class="field">Daily buy cap
+          <input id="daily-cap" data-draft type="number" min="0" max="10000" step="1" value="3" inputmode="numeric">
+          <span class="field-help">Stop buying at this number each day. 0 = no local limit.</span>
+        </label>
+      </div>
+
+      <label class="switch-row">
+        <span class="switch-copy">
+          <strong>Quantity required only</strong>
+          <small>Skip leads that do not state a quantity.</small>
+        </span>
+        <span class="switch">
+          <input id="qty-required" data-draft type="checkbox">
+          <span class="switch-track"></span>
+        </span>
+      </label>
+
+      <p class="mini-note">Today: 1 of 3 bought · the license allows up to 10 per day. The lower cap applies.</p>
+    </div>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Buyer checks</h2>
+          <p>Extra checks on the buyer, in addition to your existing contact filters.</p>
+        </div>
+      </div>
+
+      <div>
+        <span class="field-help" style="font-weight:700;color:var(--ink);font-size:12px">When more than one check is on</span>
+        <div class="segmented" role="radiogroup" aria-label="Buyer check match mode">
+          <label class="segment"><input type="radio" name="verify-mode" value="all" data-draft checked>All must pass</label>
+          <label class="segment"><input type="radio" name="verify-mode" value="any" data-draft>Any one passes</label>
+        </div>
+        <span class="field-help" style="margin-top:8px">A lead missing the buyer data for an enabled check is rejected.</span>
+      </div>
+
+      <div class="grid three" style="margin-top:16px">
+        <label class="check-card">
+          <span class="switch-copy">
+            <strong>Require WhatsApp</strong>
+            <small>Buyer has WhatsApp on the lead.</small>
+          </span>
+          <span class="switch">
+            <input id="req-whatsapp" data-draft type="checkbox">
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <label class="check-card">
+          <span class="switch-copy">
+            <strong>Require email</strong>
+            <small>An email address is present.</small>
+          </span>
+          <span class="switch">
+            <input id="req-email" data-draft type="checkbox">
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <label class="check-card">
+          <span class="switch-copy">
+            <strong>Require verified mobile</strong>
+            <small>IndiaMART has OTP-verified the number.</small>
+          </span>
+          <span class="switch">
+            <input id="req-verified" data-draft type="checkbox">
+            <span class="switch-track"></span>
+          </span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <span class="field-help" style="font-weight:700;color:var(--ink);font-size:12px">Lead gates</span>
+      <p class="field-help" style="margin-top:4px">These apply on their own, not as part of the match mode above.</p>
+
+      <div class="switch-row">
+        <div class="switch-copy">
+          <strong>Only GST-verified leads</strong>
+          <small>Reject leads that are not marked GST-verified.</small>
+        </div>
+        <label class="switch" aria-label="Only GST-verified leads">
+          <input id="req-gst" data-draft type="checkbox">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-row">
+        <div class="switch-copy">
+          <strong>Skip new buyer accounts</strong>
+          <small>Reject buyers whose IndiaMART account is newer than the minimum membership.</small>
+          <label class="inline-number" for="min-months">Minimum membership
+            <span class="months-pair"><input id="min-months" data-draft type="number" min="1" max="11" step="1" value="2" inputmode="numeric"> months</span>
+          </label>
+        </div>
+        <label class="switch" aria-label="Skip new buyer accounts">
+          <input id="skip-new" data-draft type="checkbox" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="danger-card">
+      <div>
+        <strong>Emergency buy stop</strong>
+        <p>Stops new purchases immediately. Scanning, matching and notifications continue.</p>
+      </div>
+      <div class="danger-side">
+        <span class="state-pill" id="stop-state">Buying armed</span>
+        <button class="button danger-btn" id="stop-buying" type="button">Stop buying now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ MATCHING ============================ -->
+  <section id="panel-matching" role="tabpanel" aria-labelledby="tab-matching" hidden>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Keywords</h2>
+          <p>A lead must contain at least one of these keywords to be considered.</p>
+        </div>
+        <span class="count-pill" id="kw-count">5 keywords</span>
+      </div>
+
+      <label class="field" for="kw-input" style="display:grid">
+        <span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Add keywords</span>
+        <textarea id="kw-input" rows="2" placeholder="Add keywords — one per line, comma-separated, or a JSON array"></textarea>
+      </label>
+      <p id="kw-error" class="field-error" hidden>Enter at least one keyword.</p>
+      <div class="entry-row" style="margin-top:10px">
+        <button class="button primary" id="kw-add" type="button">Add keywords</button>
+        <button class="button quiet" id="kw-import" type="button">Import CSV</button>
+        <button class="button quiet" id="kw-export" type="button">Export CSV</button>
+        <span style="flex:1"></span>
+        <button class="button quiet" id="kw-clear" type="button">Clear all</button>
+      </div>
+      <input type="file" id="kw-file" accept=".csv,text/csv" hidden>
+
+      <div class="divider"></div>
+
+      <div class="list-toolbar">
+        <input id="kw-search" type="search" placeholder="Search keywords…" aria-label="Search keywords">
+        <span class="count" id="kw-visible">5 of 5</span>
+      </div>
+      <div class="chips scroll" id="kw-chips" aria-live="polite"></div>
+      <p class="mini-note">Duplicates are ignored. The controls below decide how strictly keywords must match.</p>
+    </div>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Never buy</h2>
+          <p>Leads caught here are rejected even when a keyword matches.</p>
+        </div>
+      </div>
+
+      <div class="switch-row" style="margin-top:0">
+        <div class="switch-copy">
+          <strong>Block retail buyers</strong>
+          <small>Reject leads IndiaMART flags as retail buyers.</small>
+        </div>
+        <label class="switch" aria-label="Block retail buyers">
+          <input id="block-retail" data-draft type="checkbox">
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="switch-row">
+        <div class="switch-copy">
+          <strong>Use negative keywords</strong>
+          <small>Reject any lead containing a word below. The list is kept while this is off.</small>
+        </div>
+        <label class="switch" aria-label="Use negative keywords">
+          <input id="use-negative" data-draft type="checkbox" checked>
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="entry-row" style="margin-top:0">
+        <input id="nb-input" type="text" placeholder="Add a word or phrase to block…" aria-label="Add a negative keyword">
+        <button class="button secondary" id="nb-add" type="button">Add</button>
+      </div>
+      <div class="chips" id="nb-chips"></div>
+      <div class="empty-hint" id="nb-empty" hidden>Nothing blocked.</div>
+      <div class="entry-row">
+        <button class="button quiet" id="nb-import" type="button">Import CSV</button>
+        <button class="button quiet" id="nb-export" type="button">Export CSV</button>
+      </div>
+      <input type="file" id="nb-file" accept=".csv,text/csv" hidden>
+    </div>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Match precision</h2>
+          <p>How strictly a keyword must appear, and where it is looked up.</p>
+        </div>
+      </div>
+
+      <label class="field" for="threshold">Keyword match threshold</label>
+      <div class="threshold-row">
+        <input id="threshold" data-draft type="range" min="1" max="100" step="1" value="100">
+        <input id="threshold-number" data-draft type="number" min="1" max="100" step="1" value="100" inputmode="numeric" aria-label="Keyword match threshold percentage">
+        <span class="threshold-unit">%</span>
+      </div>
+      <span class="field-help" style="margin-top:8px">100% = every word in the keyword must appear. Below 100% allows partial matches.</span>
+
+      <div class="divider"></div>
+
+      <span class="field-help" style="font-weight:700;color:var(--ink);font-size:12px">Match keywords in</span>
+      <div class="segmented" role="radiogroup" aria-label="Match keywords in" style="margin-top:8px">
+        <label class="segment"><input type="radio" name="scope" value="title" data-draft checked>Title only</label>
+        <label class="segment"><input type="radio" name="scope" value="category" data-draft>Category only</label>
+        <label class="segment"><input type="radio" name="scope" value="both" data-draft>Both</label>
+        <label class="segment"><input type="radio" name="scope" value="either" data-draft>Either one</label>
+      </div>
+      <span class="field-help" style="margin-top:8px">Category only and Both reject a lead without category data; Either falls back to title.</span>
+    </div>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Buying area</h2>
+          <p>Where leads may come from. The licence decides the area type.</p>
+        </div>
+        <span class="count-pill" id="area-mode">Local (India)</span>
+      </div>
+
+      <p class="mini-note" style="margin-top:0">Your licence is <strong>Local (India)</strong>. Export licences show a country list here instead.</p>
+
+      <div class="list-toolbar">
+        <input id="area-input" type="text" list="state-list" placeholder="Add a state…" aria-label="Add a state">
+        <button class="button secondary" id="area-add" type="button">Add</button>
+        <span class="count" id="area-count">2 selected</span>
+      </div>
+      <div class="chips" id="area-chips"></div>
+      <p class="mini-note">Leads outside the selected states are rejected. At least one state is required for a Local licence.</p>
+      <datalist id="state-list">
+        <option value="Maharashtra"></option><option value="Gujarat"></option>
+        <option value="Tamil Nadu"></option><option value="Karnataka"></option>
+        <option value="Telangana"></option><option value="Delhi"></option>
+        <option value="Uttar Pradesh"></option><option value="West Bengal"></option>
+        <option value="Rajasthan"></option><option value="Punjab"></option>
+      </datalist>
+    </div>
+  </section>
+
+  <!-- =========================== MONITORING =========================== -->
+  <section id="panel-monitoring" role="tabpanel" aria-labelledby="tab-monitoring" hidden>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Lead sources</h2>
+          <p>Where new leads are picked up from. Independent of buying.</p>
+        </div>
+      </div>
+
+      <label class="switch-row" style="margin-top:0">
+        <span class="switch-copy">
+          <strong>Real-time lead detection</strong>
+          <small>New leads are pushed as soon as they are posted.</small>
+          <small style="color:#0f7a51;font-weight:600"><span class="dot" style="width:7px;height:7px;margin-right:5px"></span>Connected · last lead 2 minutes ago</small>
+        </span>
+        <span class="switch">
+          <input id="realtime" data-immediate type="checkbox" checked>
+          <span class="switch-track"></span>
+        </span>
+      </label>
+
+      <label class="switch-row">
+        <span class="switch-copy">
+          <strong>Auto-mark interest on past leads</strong>
+          <small>Marks up to 2 past leads every 30 minutes. Changes require the account to be stopped.</small>
+        </span>
+        <span class="switch">
+          <input id="interest" data-immediate type="checkbox">
+          <span class="switch-track"></span>
+        </span>
+      </label>
+    </div>
+
+    <div class="panel">
+      <div class="section-heading">
+        <div>
+          <h2>Notifications</h2>
+          <p>Purchase alerts from the licence, and browser alerts while this dashboard is open.</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:13px 16px">
+        <span class="switch-copy">
+          <strong style="font-size:13px">Purchase alerts</strong>
+          <small style="color:var(--muted);font-size:11px">Licence email m•••@example.com · Telegram linked. Managed in the licence portal.</small>
+        </span>
+        <span class="state-pill" style="color:#0f4f38;border-color:#cfe2d7;background:#eef7f2"><span class="dot" style="width:7px;height:7px;margin-right:5px"></span>Active</span>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin-top:12px">
+        <span class="switch-copy">
+          <strong style="font-size:13px">Browser notifications</strong>
+          <small style="color:var(--muted);font-size:11px">Allowed for this site. Manage this in your browser settings.</small>
+        </span>
+        <span class="state-pill" style="color:#0f4f38;border-color:#cfe2d7;background:#eef7f2"><span class="dot" style="width:7px;height:7px;margin-right:5px"></span>Allowed</span>
+      </div>
+
+      <label class="switch-row">
+        <span class="switch-copy"><strong>Notify on lead match</strong><small>A new lead matched your filters.</small></span>
+        <span class="switch"><input id="notify-match" data-immediate type="checkbox" checked><span class="switch-track"></span></span>
+      </label>
+      <label class="switch-row">
+        <span class="switch-copy"><strong>Notify on purchase</strong><small>A purchase completed or needs attention.</small></span>
+        <span class="switch"><input id="notify-buy" data-immediate type="checkbox" checked><span class="switch-track"></span></span>
+      </label>
+      <label class="switch-row">
+        <span class="switch-copy"><strong>Notification sound</strong><small>Play a short sound with each alert.</small></span>
+        <span class="switch"><input id="notify-sound" data-immediate type="checkbox" checked><span class="switch-track"></span></span>
+      </label>
+
+      <p class="mini-note">Browser alerts stop when this tab is closed. CloudBot does not add buyer contact details to browser alerts.</p>
+    </div>
+  </section>
+
+  <div class="save-bar">
+    <div class="save-state">
+      <span class="dot" id="save-dot" style="background:#b7c4bb"></span>
+      <span><strong id="save-title">All changes saved</strong><br><span id="save-sub" style="font-size:11px">Purchase and matching settings are up to date.</span></span>
+    </div>
+    <div class="save-actions">
+      <button class="button quiet" id="discard" type="button" disabled>Discard</button>
+      <button class="button primary" id="save" type="button" disabled>Save changes</button>
+    </div>
+  </div>
+
+  <p class="prototype-note">Review prototype with sample data. Nothing here is saved, and no account or external service is contacted.</p>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const flash = $('flash');
+  let flashTimer;
+
+  function showFlash(message, isError) {
+    flash.textContent = message;
+    flash.classList.toggle('error', Boolean(isError));
+    flash.hidden = false;
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => { flash.hidden = true; }, 3200);
+  }
+
+  // ---------- tabs ----------
+  const tabs = [...document.querySelectorAll('[data-tab]')];
+  const panels = { buying: $('panel-buying'), matching: $('panel-matching'), monitoring: $('panel-monitoring') };
+  function selectTab(name) {
+    tabs.forEach((tab) => {
+      const on = tab.dataset.tab === name;
+      tab.classList.toggle('active', on);
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+    });
+    Object.entries(panels).forEach(([key, panel]) => { panel.hidden = key !== name; });
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectTab(tab.dataset.tab));
+    tab.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const next = tabs[(index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus();
+      selectTab(next.dataset.tab);
+    });
+  });
+
+  // ---------- chip lists ----------
+  const lists = {
+    keywords: ['overhead crane', 'EOT cranes', 'jib crane', 'gantry crane', 'hoist'],
+    never: ['repair', 'second hand', 'job vacancy'],
+    area: ['Maharashtra', 'Gujarat']
+  };
+  const baselineLists = JSON.parse(JSON.stringify(lists));
+
+  const config = {
+    keywords: { root: 'kw-chips', empty: null, block: false, remove: 'Remove' },
+    never: { root: 'nb-chips', empty: 'nb-empty', block: true, remove: 'Remove' },
+    area: { root: 'area-chips', empty: null, block: false, remove: 'Remove' }
+  };
+
+  function renderList(name) {
+    const meta = config[name];
+    const root = $(meta.root);
+    root.textContent = '';
+    lists[name].forEach((value, index) => {
+      const chip = document.createElement('span');
+      chip.className = 'chip' + (meta.block ? ' block' : '');
+      const label = document.createElement('span');
+      label.textContent = value;
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.setAttribute('aria-label', meta.remove + ' ' + value);
+      remove.textContent = '×';
+      remove.addEventListener('click', () => {
+        lists[name].splice(index, 1);
+        renderList(name);
+        markDirty();
+      });
+      chip.append(label, remove);
+      root.append(chip);
+    });
+    if (meta.empty) $(meta.empty).hidden = lists[name].length > 0;
+    if (name === 'keywords') {
+      $('kw-count').textContent = lists.keywords.length + (lists.keywords.length === 1 ? ' keyword' : ' keywords');
+      applyKeywordFilter();
+    }
+    if (name === 'area') {
+      $('area-count').textContent = lists.area.length + ' selected';
+    }
+  }
+
+  function addValue(name, raw) {
+    const value = String(raw || '').trim().replace(/\s+/g, ' ');
+    if (!value) return false;
+    const exists = lists[name].some((item) => item.toLowerCase() === value.toLowerCase());
+    if (exists) return false;
+    lists[name].push(value);
+    renderList(name);
+    markDirty();
+    return true;
+  }
+
+  function splitEntries(raw) {
+    const text = String(raw || '').trim();
+    if (!text) return [];
+    if (text.startsWith('[')) {
+      try {
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)) return [];
+        return parsed.map((entry) => (typeof entry === 'string' ? entry : entry && entry.text)).filter(Boolean);
+      } catch { return []; }
+    }
+    return text.split(/[\n,]+/).map((entry) => entry.trim()).filter(Boolean);
+  }
+
+  // keyword search
+  function applyKeywordFilter() {
+    const term = $('kw-search').value.trim().toLowerCase();
+    const chips = [...$('kw-chips').children];
+    let visible = 0;
+    chips.forEach((chip) => {
+      const match = !term || chip.textContent.toLowerCase().includes(term);
+      chip.hidden = !match;
+      if (match) visible += 1;
+    });
+    $('kw-visible').textContent = visible + ' of ' + lists.keywords.length;
+  }
+  $('kw-search').addEventListener('input', applyKeywordFilter);
+
+  // ---------- draft state ----------
+  const draftInputs = [...document.querySelectorAll('[data-draft]')];
+  const baseline = new Map(draftInputs.map((el, index) => [index, el.type === 'checkbox' || el.type === 'radio' ? (el.checked ? '1' : '') : el.value]));
+  let dirty = false;
+
+  function setDirty(value) {
+    dirty = value;
+    $('save').disabled = !dirty;
+    $('discard').disabled = !dirty;
+    $('save-dot').style.background = dirty ? '#c98d5f' : '#b7c4bb';
+    $('save-title').textContent = dirty ? 'Unsaved changes' : 'All changes saved';
+    $('save-sub').textContent = dirty ? 'Save to apply purchase and matching settings.' : 'Purchase and matching settings are up to date.';
+  }
+  function markDirty() { setDirty(true); }
+
+  draftInputs.forEach((el) => {
+    el.addEventListener('input', markDirty);
+    el.addEventListener('change', markDirty);
+  });
+
+  // threshold sync
+  const threshold = $('threshold');
+  const thresholdNumber = $('threshold-number');
+  threshold.addEventListener('input', () => { thresholdNumber.value = threshold.value; });
+  thresholdNumber.addEventListener('input', () => {
+    const value = Math.min(100, Math.max(1, Number(thresholdNumber.value) || 1));
+    threshold.value = String(value);
+  });
+
+  // ---------- add / clear ----------
+  $('kw-add').addEventListener('click', () => {
+    const entries = splitEntries($('kw-input').value);
+    if (!entries.length) { $('kw-error').hidden = false; return; }
+    $('kw-error').hidden = true;
+    const added = entries.filter((entry) => addValue('keywords', entry)).length;
+    $('kw-input').value = '';
+    showFlash(added ? added + (added === 1 ? ' keyword added' : ' keywords added') + ' to the draft.' : 'Those keywords are already in the list.');
+  });
+  $('kw-clear').addEventListener('click', () => {
+    if (!lists.keywords.length) return;
+    if (!confirm('Remove all ' + lists.keywords.length + ' keywords from the draft?')) return;
+    lists.keywords = [];
+    renderList('keywords');
+    markDirty();
+  });
+  $('nb-add').addEventListener('click', () => {
+    const value = $('nb-input').value;
+    if (addValue('never', value)) { $('nb-input').value = ''; }
+    else { showFlash('Enter a word that is not already blocked.', true); }
+  });
+  $('nb-input').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); $('nb-add').click(); } });
+  $('area-add').addEventListener('click', () => {
+    if (addValue('area', $('area-input').value)) { $('area-input').value = ''; }
+    else { showFlash('Enter a state that is not already selected.', true); }
+  });
+  $('area-input').addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    $('area-add').click();
+  });
+
+  // ---------- CSV import / export ----------
+  function parseCsv(text) {
+    const rows = [];
+    for (const line of String(text).split(/\r?\n/)) {
+      if (!line.trim()) continue;
+      let value = '';
+      if (line[0] === '"') {
+        let index = 1;
+        while (index < line.length) {
+          if (line[index] === '"' && line[index + 1] === '"') { value += '"'; index += 2; continue; }
+          if (line[index] === '"') break;
+          value += line[index++];
+        }
+      } else {
+        value = line.split(',')[0];
+      }
+      value = value.trim();
+      if (!value || /^keywords?$/i.test(value)) continue;
+      rows.push(value);
+    }
+    return rows;
+  }
+
+  function exportCsv(name, values) {
+    const csv = 'keyword\n' + values.map((value) => '"' + value.replace(/"/g, '""') + '"').join('\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = name;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function wireCsv(prefix, listName) {
+    $(prefix + '-import').addEventListener('click', () => $(prefix + '-file').click());
+    $(prefix + '-file').addEventListener('change', async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const entries = parseCsv(await file.text());
+      const added = entries.filter((entry) => addValue(listName, entry)).length;
+      event.target.value = '';
+      if (added) showFlash(added + (added === 1 ? ' entry' : ' entries') + ' imported into the draft.');
+      else showFlash('Everything in that file is already in the list.');
+    });
+    $(prefix + '-export').addEventListener('click', () => exportCsv(listName + '.csv', lists[listName]));
+  }
+  wireCsv('kw', 'keywords');
+  wireCsv('nb', 'never');
+
+  // ---------- new buyer gate ----------
+  const skipNew = $('skip-new');
+  const minMonths = $('min-months');
+  function syncMonths() { minMonths.disabled = !skipNew.checked; }
+  skipNew.addEventListener('change', syncMonths);
+  syncMonths();
+
+  // ---------- immediate actions ----------
+  document.querySelectorAll('[data-immediate]').forEach((el) => {
+    el.addEventListener('change', () => {
+      showFlash(el.checked ? 'Turned on · applies immediately.' : 'Turned off · applies immediately.');
+    });
+  });
+
+  $('stop-buying').addEventListener('click', () => {
+    $('stop-buying').disabled = true;
+    $('stop-buying').textContent = 'Buying stopped';
+    $('stop-state').textContent = 'Buying stopped';
+    $('stop-state').style.borderColor = '#d8e1db';
+    $('stop-state').style.color = '#53635a';
+    showFlash('Buying stopped. Scanning and notifications continue.');
+  });
+
+  // ---------- save / discard ----------
+  $('save').addEventListener('click', () => {
+    draftInputs.forEach((el, index) => {
+      baseline.set(index, el.type === 'checkbox' || el.type === 'radio' ? (el.checked ? '1' : '') : el.value);
+    });
+    Object.keys(lists).forEach((name) => { baselineLists[name] = [...lists[name]]; });
+    setDirty(false);
+    showFlash('Settings saved. Purchase changes apply the next time buying starts.');
+  });
+
+  $('discard').addEventListener('click', () => {
+    draftInputs.forEach((el, index) => {
+      if (el.type === 'checkbox' || el.type === 'radio') { el.checked = baseline.get(index) === '1'; }
+      else { el.value = baseline.get(index); }
+    });
+    threshold.value = thresholdNumber.value;
+    Object.keys(lists).forEach((name) => { lists[name] = [...baselineLists[name]]; renderList(name); });
+    syncMonths();
+    setDirty(false);
+    showFlash('Changes discarded.');
+  });
+
+  ['keywords', 'never', 'area'].forEach(renderList);
+  setDirty(false);
+})();
+</script>
+</body>
+</html>

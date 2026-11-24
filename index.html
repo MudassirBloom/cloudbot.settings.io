@@ -89,6 +89,8 @@ textarea{width:100%;resize:vertical;line-height:1.55}
 /* verification tiles */
 .check-card{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:10px;padding:14px 15px;cursor:pointer;font-weight:400}
 .check-card .switch-copy small{min-height:32px}
+.badge-verified{display:inline-flex;align-items:center;gap:3px;margin-left:5px;background:#e5f4ec;color:#0f4f38;border:1px solid #b4d1c5;border-radius:999px;padding:2px 7px;font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;vertical-align:middle}
+.badge-verified::before{content:"✓";font-size:9px}
 
 /* segmented */
 .segmented{display:inline-flex;gap:4px;flex-wrap:wrap;background:#f2f5f2;border:1px solid var(--line);border-radius:10px;padding:4px;margin-top:2px}
@@ -109,6 +111,43 @@ textarea{width:100%;resize:vertical;line-height:1.55}
 .danger-card p{margin-top:5px;color:#8a4a40;font-size:12px;line-height:1.55;max-width:62ch}
 .danger-side{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .state-pill{border:1px solid #f0cfc7;background:#fff;color:var(--danger);border-radius:20px;padding:6px 12px;font-size:11px;font-weight:700;white-space:nowrap}
+
+/* licence strip */
+.licence-strip{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:18px;box-shadow:0 3px 14px #1b422108}
+.licence-main{display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-width:0}
+.licence-items{display:flex;gap:22px;flex-wrap:wrap;min-width:0}
+.licence-items div{display:grid;gap:2px;min-width:0}
+.licence-items small{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.licence-items strong{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+.licence-items .mono{font-family:Consolas,monospace;font-size:11px;letter-spacing:.02em}
+.licence-note{font-size:11px;color:var(--muted);white-space:nowrap}
+.licence-pill{color:#0f4f38;border-color:#cfe2d7;background:#eef7f2}
+.tg-message{margin:10px 0 0;font-size:12px;line-height:1.6;color:#42564a}
+.tg-message code{font-family:Consolas,monospace;font-size:12px;background:#f4f6f4;border:1px solid var(--line);border-radius:5px;padding:1px 5px;word-break:break-all}
+
+.warn-note{background:#fff8ed;border-left:3px solid #c98d5f;border-radius:0 8px 8px 0;padding:11px 14px;font-size:12px;line-height:1.55;color:#7a5a3d;margin-top:14px}
+
+/* keyword editor */
+.kw-add{margin-top:2px}
+.kw-form{border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:12px;background:#fbfcfb}
+.kw-form-title{display:block;font-size:13px;margin-bottom:12px}
+.kw-form .grid{margin-bottom:12px}
+.multi-select{border:1px solid #d8e1db;border-radius:8px;background:#fff}
+.multi-select summary{list-style:none;cursor:pointer;padding:10px 12px;font-size:13px;display:flex;justify-content:space-between;gap:8px;align-items:center;font-weight:400}
+.multi-select summary::-webkit-details-marker{display:none}
+.multi-select summary::after{content:"▾";color:var(--muted);font-size:11px}
+.multi-select[open] summary{border-bottom:1px solid var(--line)}
+.multi-options{max-height:180px;overflow:auto;padding:8px;display:grid;gap:4px}
+.multi-options label{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:400;padding:4px 6px;border-radius:6px;cursor:pointer}
+.multi-options label:hover{background:#f4f8f5}
+.multi-options input{accent-color:var(--green)}
+.kw-list{margin-top:12px;display:grid;gap:8px}
+.kw-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kw-row strong{font-size:13px}
+.kw-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.kw-meta span{font-size:10px;font-weight:700;color:#5c6d63;background:#f4f6f4;border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+.icon-btn{border:0;background:transparent;color:#8a9a90;font-size:16px;cursor:pointer;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+.icon-btn:hover{background:#fbe4dd;color:var(--danger)}
 
 /* keyword chips */
 .list-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
@@ -187,6 +226,21 @@ textarea{width:100%;resize:vertical;line-height:1.55}
     <span class="account-state"><span class="dot"></span>Account stopped</span>
   </div>
 
+  <section class="licence-strip" aria-label="Licence">
+    <div class="licence-main">
+      <span class="state-pill licence-pill"><span class="dot" style="width:7px;height:7px;margin-right:5px"></span>Licensed</span>
+      <div class="licence-items">
+        <div><small>Organisation</small><strong>BCS</strong></div>
+        <div><small>Licence email</small><strong>owner@bcs.example</strong></div>
+        <div><small>Expires</small><strong>11/25/2026, 7:39:12 PM</strong></div>
+        <div><small>Weekly allocation</small><strong>75 leads</strong></div>
+        <div><small>IndiaMART account</small><strong>•••• 43210</strong></div>
+        <div><small>Key</small><strong class="mono">BCS-DEMO-abc123xyz</strong></div>
+      </div>
+    </div>
+    <span class="licence-note">Managed on License &amp; Activation</span>
+  </section>
+
   <nav class="settings-tabs" role="tablist" aria-label="Settings sections">
     <button class="settings-tab active" id="tab-buying" type="button" role="tab" aria-selected="true" aria-controls="panel-buying" data-tab="buying">Buying</button>
     <button class="settings-tab" id="tab-matching" type="button" role="tab" aria-selected="false" aria-controls="panel-matching" data-tab="matching" tabindex="-1">Matching</button>
@@ -204,15 +258,11 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       <div class="section-heading">
         <div>
           <h2>Purchase limits</h2>
-          <p>How many leads this account may buy, and how small a lead may be.</p>
+          <p>How many leads this account may buy.</p>
         </div>
       </div>
 
       <div class="grid three">
-        <label class="field">Minimum quantity
-          <input id="min-quantity" data-draft type="number" min="0" max="1000000" step="1" value="25" inputmode="numeric">
-          <span class="field-help">Skip leads that state less than this. 0 = no minimum.</span>
-        </label>
         <label class="field">Max leads per session
           <input id="session-cap" data-draft type="number" min="0" max="1000" step="1" value="3" inputmode="numeric">
           <span class="field-help">Stop after this many buys in one Start. 0 = no limit.</span>
@@ -221,18 +271,18 @@ textarea{width:100%;resize:vertical;line-height:1.55}
           <input id="daily-cap" data-draft type="number" min="0" max="10000" step="1" value="3" inputmode="numeric">
           <span class="field-help">Stop buying at this number each day. 0 = no local limit.</span>
         </label>
+        <label class="field">Weekly buy cap
+          <select id="weekly-cap" data-draft>
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="75">75</option>
+          </select>
+          <span class="field-help">The lower of the daily, weekly and licence limits applies.</span>
+        </label>
       </div>
 
-      <label class="switch-row">
-        <span class="switch-copy">
-          <strong>Quantity required only</strong>
-          <small>Skip leads that do not state a quantity.</small>
-        </span>
-        <span class="switch">
-          <input id="qty-required" data-draft type="checkbox">
-          <span class="switch-track"></span>
-        </span>
-      </label>
+      <p id="weekly-warning" class="warn-note">After your weekly consumption is over, bot will start consuming your non-lapsable leads.</p>
 
       <p class="mini-note">Today: 1 of 3 bought · the license allows up to 10 per day. The lower cap applies.</p>
     </div>
@@ -257,6 +307,16 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       <div class="grid three" style="margin-top:16px">
         <label class="check-card">
           <span class="switch-copy">
+            <strong>Require mobile number <span class="badge-verified">Verified</span></strong>
+            <small>A mobile number is needed.</small>
+          </span>
+          <span class="switch">
+            <input id="req-mobile" data-draft type="checkbox" checked>
+            <span class="switch-track"></span>
+          </span>
+        </label>
+        <label class="check-card">
+          <span class="switch-copy">
             <strong>Require WhatsApp</strong>
             <small>Buyer has WhatsApp on the lead.</small>
           </span>
@@ -272,16 +332,6 @@ textarea{width:100%;resize:vertical;line-height:1.55}
           </span>
           <span class="switch">
             <input id="req-email" data-draft type="checkbox">
-            <span class="switch-track"></span>
-          </span>
-        </label>
-        <label class="check-card">
-          <span class="switch-copy">
-            <strong>Require verified mobile</strong>
-            <small>IndiaMART has OTP-verified the number.</small>
-          </span>
-          <span class="switch">
-            <input id="req-verified" data-draft type="checkbox">
             <span class="switch-track"></span>
           </span>
         </label>
@@ -316,6 +366,17 @@ textarea{width:100%;resize:vertical;line-height:1.55}
           <span class="switch-track"></span>
         </label>
       </div>
+
+      <div class="switch-row">
+        <div class="switch-copy">
+          <strong>Skip the 5 hour old leads</strong>
+          <small>Ignore leads that are more than 5 hours old.</small>
+        </div>
+        <label class="switch" aria-label="Skip the 5 hour old leads">
+          <input id="skip-5h" data-draft type="checkbox">
+          <span class="switch-track"></span>
+        </label>
+      </div>
     </div>
 
     <div class="danger-card">
@@ -342,34 +403,62 @@ textarea{width:100%;resize:vertical;line-height:1.55}
         <span class="count-pill" id="kw-count">5 keywords</span>
       </div>
 
-      <label class="field" for="kw-input" style="display:grid">
-        <span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Add keywords</span>
-        <textarea id="kw-input" rows="2" placeholder="Add keywords — one per line, comma-separated, or a JSON array"></textarea>
-      </label>
-      <p id="kw-error" class="field-error" hidden>Enter at least one keyword.</p>
-      <div class="entry-row" style="margin-top:10px">
-        <button class="button primary" id="kw-add" type="button">Add keywords</button>
-        <button class="button quiet" id="kw-import" type="button">Import CSV</button>
-        <button class="button quiet" id="kw-export" type="button">Export CSV</button>
-        <span style="flex:1"></span>
-        <button class="button quiet" id="kw-clear" type="button">Clear all</button>
-      </div>
-      <input type="file" id="kw-file" accept=".csv,text/csv" hidden>
+      <button class="button primary kw-add" id="kw-open" type="button">+ Add keyword</button>
 
-      <div class="divider"></div>
+      <div class="kw-form" id="kw-form" hidden>
+        <strong class="kw-form-title">New keyword</strong>
+        <div class="grid two">
+          <label class="field">Keyword
+            <input id="kw-text" type="text" placeholder="e.g. overhead crane">
+          </label>
+          <label class="field">Minimum quantity
+            <input id="kw-min" type="number" min="0" step="1" value="1" inputmode="numeric">
+          </label>
+          <label class="field">Unit
+            <input id="kw-unit" type="text" placeholder="e.g. pieces">
+          </label>
+          <label class="field">Daily clicks (0 = unlimited)
+            <input id="kw-clicks" type="number" min="0" step="1" value="0" inputmode="numeric">
+          </label>
+          <label class="field">Category
+            <input id="kw-category" type="text" placeholder="e.g. Cranes">
+          </label>
+          <div class="field">
+            <span>States for this keyword (none = all selected)</span>
+            <details class="multi-select">
+              <summary id="kw-states-summary">0 of 10 states</summary>
+              <div class="multi-options" id="kw-states-options"></div>
+            </details>
+          </div>
+        </div>
+        <p id="kw-error" class="field-error" hidden>Enter a keyword.</p>
+        <div class="entry-row">
+          <button class="button primary" id="kw-save" type="button">Add keyword</button>
+          <button class="button quiet" id="kw-cancel" type="button">Cancel</button>
+        </div>
+      </div>
 
       <div class="list-toolbar">
         <input id="kw-search" type="search" placeholder="Search keywords…" aria-label="Search keywords">
         <span class="count" id="kw-visible">5 of 5</span>
       </div>
-      <div class="chips scroll" id="kw-chips" aria-live="polite"></div>
-      <p class="mini-note">Duplicates are ignored. The controls below decide how strictly keywords must match.</p>
+      <div class="kw-list" id="kw-list" aria-live="polite"></div>
+      <div class="empty-hint" id="kw-empty" hidden>No keywords yet. Add one to start matching leads.</div>
+
+      <div class="entry-row">
+        <button class="button quiet" id="kw-import" type="button">Import CSV</button>
+        <button class="button quiet" id="kw-export" type="button">Export CSV</button>
+        <span style="flex:1"></span>
+        <button class="button quiet" id="kw-clear" type="button">Remove all</button>
+      </div>
+      <input type="file" id="kw-file" accept=".csv,text/csv" hidden>
+      <p class="mini-note">Unit, daily clicks and category are saved with the keyword. Matching uses the keyword text, threshold and scope below.</p>
     </div>
 
     <div class="panel">
       <div class="section-heading">
         <div>
-          <h2>Never buy</h2>
+          <h2>Negative Keywords</h2>
           <p>Leads caught here are rejected even when a keyword matches.</p>
         </div>
       </div>
@@ -443,20 +532,41 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       <div class="section-heading">
         <div>
           <h2>Buying area</h2>
-          <p>Where leads may come from. The licence decides the area type.</p>
+          <p>White-list only. The licence decides which list applies.</p>
         </div>
         <span class="count-pill" id="area-mode">Local (India)</span>
       </div>
 
-      <p class="mini-note" style="margin-top:0">Your licence is <strong>Local (India)</strong>. Export licences show a country list here instead.</p>
-
-      <div class="list-toolbar">
-        <input id="area-input" type="text" list="state-list" placeholder="Add a state…" aria-label="Add a state">
-        <button class="button secondary" id="area-add" type="button">Add</button>
-        <span class="count" id="area-count">2 selected</span>
+      <div class="grid two">
+        <div>
+          <span class="field-help" style="font-weight:700;color:var(--ink);font-size:12px">Export countries</span>
+          <p class="mini-note" style="margin-top:2px">Used by export licences. Ignored for Local (India).</p>
+          <div class="list-toolbar" style="margin-top:8px">
+            <input id="country-input" type="text" list="country-list" placeholder="Add a country…" aria-label="Add an export country">
+            <button class="button secondary" id="country-add" type="button">Add</button>
+            <span class="count" id="country-count">2 selected</span>
+          </div>
+          <div class="chips" id="country-chips"></div>
+        </div>
+        <div>
+          <span class="field-help" style="font-weight:700;color:var(--ink);font-size:12px">Local states (India)</span>
+          <p class="mini-note" style="margin-top:2px">Used by Local (India) licences. At least one is required.</p>
+          <div class="list-toolbar" style="margin-top:8px">
+            <input id="state-input" type="text" list="state-list" placeholder="Add a state…" aria-label="Add a local state">
+            <button class="button secondary" id="state-add" type="button">Add</button>
+            <span class="count" id="state-count">2 selected</span>
+          </div>
+          <div class="chips" id="state-chips"></div>
+        </div>
       </div>
-      <div class="chips" id="area-chips"></div>
-      <p class="mini-note">Leads outside the selected states are rejected. At least one state is required for a Local licence.</p>
+
+      <datalist id="country-list">
+        <option value="Nepal"></option><option value="Sri Lanka"></option>
+        <option value="Bangladesh"></option><option value="United Arab Emirates"></option>
+        <option value="Saudi Arabia"></option><option value="United Kingdom"></option>
+        <option value="United States"></option><option value="Germany"></option>
+        <option value="Kenya"></option><option value="South Africa"></option>
+      </datalist>
       <datalist id="state-list">
         <option value="Maharashtra"></option><option value="Gujarat"></option>
         <option value="Tamil Nadu"></option><option value="Karnataka"></option>
@@ -489,17 +599,6 @@ textarea{width:100%;resize:vertical;line-height:1.55}
           <span class="switch-track"></span>
         </span>
       </label>
-
-      <label class="switch-row">
-        <span class="switch-copy">
-          <strong>Auto-mark interest on past leads</strong>
-          <small>Marks up to 2 past leads every 30 minutes. Changes require the account to be stopped.</small>
-        </span>
-        <span class="switch">
-          <input id="interest" data-immediate type="checkbox">
-          <span class="switch-track"></span>
-        </span>
-      </label>
     </div>
 
     <div class="panel">
@@ -512,10 +611,21 @@ textarea{width:100%;resize:vertical;line-height:1.55}
 
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:13px 16px">
         <span class="switch-copy">
-          <strong style="font-size:13px">Purchase alerts</strong>
-          <small style="color:var(--muted);font-size:11px">Licence email m•••@example.com · Telegram linked. Managed in the licence portal.</small>
+          <strong style="font-size:13px">Email alerts</strong>
+          <small style="color:var(--muted);font-size:11px">Licence email m•••@example.com. Managed in the licence portal.</small>
         </span>
         <span class="state-pill" style="color:#0f4f38;border-color:#cfe2d7;background:#eef7f2"><span class="dot" style="width:7px;height:7px;margin-right:5px"></span>Active</span>
+      </div>
+
+      <div style="border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+          <span class="switch-copy">
+            <strong style="font-size:13px">Telegram alerts</strong>
+            <small style="color:var(--muted);font-size:11px">Purchase alerts on Telegram.</small>
+          </span>
+          <button class="button secondary" id="tg-connect" type="button">Connect Telegram</button>
+        </div>
+        <p class="tg-message" id="tg-message" aria-live="polite" hidden></p>
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin-top:12px">
@@ -594,22 +704,22 @@ textarea{width:100%;resize:vertical;line-height:1.55}
     });
   });
 
-  // ---------- chip lists ----------
+  // ---------- chip lists (negative keywords, countries, states) ----------
   const lists = {
-    keywords: ['overhead crane', 'EOT cranes', 'jib crane', 'gantry crane', 'hoist'],
     never: ['repair', 'second hand', 'job vacancy'],
-    area: ['Maharashtra', 'Gujarat']
+    countries: ['Nepal', 'Sri Lanka'],
+    states: ['Maharashtra', 'Gujarat']
   };
   const baselineLists = JSON.parse(JSON.stringify(lists));
 
-  const config = {
-    keywords: { root: 'kw-chips', empty: null, block: false, remove: 'Remove' },
-    never: { root: 'nb-chips', empty: 'nb-empty', block: true, remove: 'Remove' },
-    area: { root: 'area-chips', empty: null, block: false, remove: 'Remove' }
+  const listConfig = {
+    never: { root: 'nb-chips', empty: 'nb-empty', block: true },
+    countries: { root: 'country-chips', empty: null, block: false },
+    states: { root: 'state-chips', empty: null, block: false }
   };
 
   function renderList(name) {
-    const meta = config[name];
+    const meta = listConfig[name];
     const root = $(meta.root);
     root.textContent = '';
     lists[name].forEach((value, index) => {
@@ -619,7 +729,7 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       label.textContent = value;
       const remove = document.createElement('button');
       remove.type = 'button';
-      remove.setAttribute('aria-label', meta.remove + ' ' + value);
+      remove.setAttribute('aria-label', 'Remove ' + value);
       remove.textContent = '×';
       remove.addEventListener('click', () => {
         lists[name].splice(index, 1);
@@ -630,52 +740,154 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       root.append(chip);
     });
     if (meta.empty) $(meta.empty).hidden = lists[name].length > 0;
-    if (name === 'keywords') {
-      $('kw-count').textContent = lists.keywords.length + (lists.keywords.length === 1 ? ' keyword' : ' keywords');
-      applyKeywordFilter();
-    }
-    if (name === 'area') {
-      $('area-count').textContent = lists.area.length + ' selected';
-    }
+    if (name === 'countries') $('country-count').textContent = lists.countries.length + ' selected';
+    if (name === 'states') $('state-count').textContent = lists.states.length + ' selected';
   }
 
   function addValue(name, raw) {
     const value = String(raw || '').trim().replace(/\s+/g, ' ');
     if (!value) return false;
-    const exists = lists[name].some((item) => item.toLowerCase() === value.toLowerCase());
-    if (exists) return false;
+    if (lists[name].some((item) => item.toLowerCase() === value.toLowerCase())) return false;
     lists[name].push(value);
     renderList(name);
     markDirty();
     return true;
   }
 
-  function splitEntries(raw) {
-    const text = String(raw || '').trim();
-    if (!text) return [];
-    if (text.startsWith('[')) {
-      try {
-        const parsed = JSON.parse(text);
-        if (!Array.isArray(parsed)) return [];
-        return parsed.map((entry) => (typeof entry === 'string' ? entry : entry && entry.text)).filter(Boolean);
-      } catch { return []; }
-    }
-    return text.split(/[\n,]+/).map((entry) => entry.trim()).filter(Boolean);
+  // ---------- keyword editor ----------
+  const STATES = ['Maharashtra', 'Gujarat', 'Tamil Nadu', 'Karnataka', 'Telangana', 'Delhi', 'Uttar Pradesh', 'West Bengal', 'Rajasthan', 'Punjab'];
+  const keywords = [
+    { text: 'overhead crane', minQty: 1, unit: 'pieces', clicks: 0, category: 'Cranes', states: [] },
+    { text: 'EOT cranes', minQty: 1, unit: 'pieces', clicks: 0, category: 'Cranes', states: ['Maharashtra'] },
+    { text: 'jib crane', minQty: 0, unit: '', clicks: 0, category: '', states: [] },
+    { text: 'gantry crane', minQty: 1, unit: 'pieces', clicks: 5, category: 'Cranes', states: [] },
+    { text: 'hoist', minQty: 0, unit: '', clicks: 0, category: '', states: [] }
+  ];
+  let baselineKeywords = JSON.parse(JSON.stringify(keywords));
+  let formStates = new Set();
+
+  function renderKeywords() {
+    const term = $('kw-search').value.trim().toLowerCase();
+    const root = $('kw-list');
+    root.textContent = '';
+    let visible = 0;
+    keywords.forEach((entry, index) => {
+      if (term && !entry.text.toLowerCase().includes(term)) return;
+      visible += 1;
+      const row = document.createElement('div');
+      row.className = 'kw-row';
+      const main = document.createElement('div');
+      main.className = 'kw-main';
+      const title = document.createElement('strong');
+      title.textContent = entry.text;
+      const meta = document.createElement('div');
+      meta.className = 'kw-meta';
+      const bits = [
+        'Min qty ' + entry.minQty,
+        'Unit ' + (entry.unit || '—'),
+        'Daily clicks ' + entry.clicks,
+        'Category ' + (entry.category || '—'),
+        entry.states.length ? 'States ' + entry.states.join(', ') : 'States all'
+      ];
+      bits.forEach((bit) => {
+        const span = document.createElement('span');
+        span.textContent = bit;
+        meta.append(span);
+      });
+      main.append(title, meta);
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'icon-btn';
+      remove.textContent = '×';
+      remove.setAttribute('aria-label', 'Remove ' + entry.text);
+      remove.addEventListener('click', () => {
+        keywords.splice(index, 1);
+        renderKeywords();
+        markDirty();
+      });
+      row.append(main, remove);
+      root.append(row);
+    });
+    $('kw-count').textContent = keywords.length + (keywords.length === 1 ? ' keyword' : ' keywords');
+    $('kw-visible').textContent = visible + ' of ' + keywords.length;
+    $('kw-empty').hidden = keywords.length > 0;
   }
 
-  // keyword search
-  function applyKeywordFilter() {
-    const term = $('kw-search').value.trim().toLowerCase();
-    const chips = [...$('kw-chips').children];
-    let visible = 0;
-    chips.forEach((chip) => {
-      const match = !term || chip.textContent.toLowerCase().includes(term);
-      chip.hidden = !match;
-      if (match) visible += 1;
-    });
-    $('kw-visible').textContent = visible + ' of ' + lists.keywords.length;
+  function updateStateSummary() {
+    $('kw-states-summary').textContent = formStates.size + ' of ' + STATES.length + ' states';
   }
-  $('kw-search').addEventListener('input', applyKeywordFilter);
+
+  function renderStateOptions() {
+    const box = $('kw-states-options');
+    box.textContent = '';
+    STATES.forEach((state) => {
+      const label = document.createElement('label');
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.value = state;
+      input.checked = formStates.has(state);
+      input.addEventListener('change', () => {
+        if (input.checked) formStates.add(state); else formStates.delete(state);
+        updateStateSummary();
+      });
+      label.append(input, document.createTextNode(state));
+      box.append(label);
+    });
+    updateStateSummary();
+  }
+
+  function resetKeywordForm() {
+    $('kw-form').hidden = true;
+    $('kw-text').value = '';
+    $('kw-min').value = '1';
+    $('kw-unit').value = '';
+    $('kw-clicks').value = '0';
+    $('kw-category').value = '';
+    formStates = new Set();
+    renderStateOptions();
+    $('kw-error').hidden = true;
+  }
+
+  function saveKeyword() {
+    const text = $('kw-text').value.trim().replace(/\s+/g, ' ');
+    if (!text) { $('kw-error').hidden = false; return; }
+    if (keywords.some((entry) => entry.text.toLowerCase() === text.toLowerCase())) {
+      showFlash('That keyword is already in the list.', true);
+      return;
+    }
+    keywords.push({
+      text,
+      minQty: Math.max(0, Number($('kw-min').value) || 0),
+      unit: $('kw-unit').value.trim(),
+      clicks: Math.max(0, Number($('kw-clicks').value) || 0),
+      category: $('kw-category').value.trim(),
+      states: [...formStates]
+    });
+    resetKeywordForm();
+    renderKeywords();
+    markDirty();
+    showFlash('Keyword added to the draft.');
+  }
+
+  $('kw-open').addEventListener('click', () => {
+    $('kw-form').hidden = false;
+    $('kw-text').focus();
+  });
+  $('kw-cancel').addEventListener('click', resetKeywordForm);
+  $('kw-save').addEventListener('click', saveKeyword);
+  $('kw-text').addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    saveKeyword();
+  });
+  $('kw-search').addEventListener('input', renderKeywords);
+  $('kw-clear').addEventListener('click', () => {
+    if (!keywords.length) return;
+    if (!confirm('Remove all ' + keywords.length + ' keywords from the draft?')) return;
+    keywords.length = 0;
+    renderKeywords();
+    markDirty();
+  });
 
   // ---------- draft state ----------
   const draftInputs = [...document.querySelectorAll('[data-draft]')];
@@ -706,36 +918,62 @@ textarea{width:100%;resize:vertical;line-height:1.55}
     threshold.value = String(value);
   });
 
-  // ---------- add / clear ----------
-  $('kw-add').addEventListener('click', () => {
-    const entries = splitEntries($('kw-input').value);
-    if (!entries.length) { $('kw-error').hidden = false; return; }
-    $('kw-error').hidden = true;
-    const added = entries.filter((entry) => addValue('keywords', entry)).length;
-    $('kw-input').value = '';
-    showFlash(added ? added + (added === 1 ? ' keyword added' : ' keywords added') + ' to the draft.' : 'Those keywords are already in the list.');
-  });
-  $('kw-clear').addEventListener('click', () => {
-    if (!lists.keywords.length) return;
-    if (!confirm('Remove all ' + lists.keywords.length + ' keywords from the draft?')) return;
-    lists.keywords = [];
-    renderList('keywords');
-    markDirty();
-  });
+  // ---------- negative keywords, countries, states ----------
   $('nb-add').addEventListener('click', () => {
-    const value = $('nb-input').value;
-    if (addValue('never', value)) { $('nb-input').value = ''; }
+    if (addValue('never', $('nb-input').value)) { $('nb-input').value = ''; }
     else { showFlash('Enter a word that is not already blocked.', true); }
   });
   $('nb-input').addEventListener('keydown', (event) => { if (event.key === 'Enter') { event.preventDefault(); $('nb-add').click(); } });
-  $('area-add').addEventListener('click', () => {
-    if (addValue('area', $('area-input').value)) { $('area-input').value = ''; }
-    else { showFlash('Enter a state that is not already selected.', true); }
+
+  $('country-add').addEventListener('click', () => {
+    if (addValue('countries', $('country-input').value)) { $('country-input').value = ''; }
+    else { showFlash('Enter a country that is not already listed.', true); }
   });
-  $('area-input').addEventListener('keydown', (event) => {
+  $('country-input').addEventListener('keydown', (event) => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
-    $('area-add').click();
+    $('country-add').click();
+  });
+
+  $('state-add').addEventListener('click', () => {
+    if (addValue('states', $('state-input').value)) { $('state-input').value = ''; }
+    else { showFlash('Enter a state that is not already listed.', true); }
+  });
+  $('state-input').addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter') return;
+    event.preventDefault();
+    $('state-add').click();
+  });
+
+  // ---------- telegram connect flow ----------
+  // The bot handle comes from deployment config in the real build; the desktop
+  // handle is used here as sample data.
+  const TELEGRAM_BOT = '@indiamartautobuyPRObot';
+  let telegramTimer;
+
+  function telegramCode() {
+    const bytes = new Uint8Array(12);
+    crypto.getRandomValues(bytes);
+    return [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  $('tg-connect').addEventListener('click', () => {
+    const button = $('tg-connect');
+    const message = $('tg-message');
+    clearTimeout(telegramTimer);
+    button.disabled = true;
+    button.textContent = 'Generating a connection code…';
+    message.hidden = false;
+    message.textContent = 'Generating a connection code…';
+
+    telegramTimer = setTimeout(() => {
+      const code = document.createElement('code');
+      code.textContent = telegramCode();
+      message.textContent = '';
+      message.append('Open Telegram and use code ', code, ' with ' + TELEGRAM_BOT + '.');
+      button.disabled = false;
+      button.textContent = 'Connect Telegram';
+    }, 1800);
   });
 
   // ---------- CSV import / export ----------
@@ -771,21 +1009,35 @@ textarea{width:100%;resize:vertical;line-height:1.55}
     URL.revokeObjectURL(url);
   }
 
-  function wireCsv(prefix, listName) {
+  function wireCsv(prefix, filename, readValues, writeEntries) {
     $(prefix + '-import').addEventListener('click', () => $(prefix + '-file').click());
     $(prefix + '-file').addEventListener('change', async (event) => {
       const file = event.target.files && event.target.files[0];
       if (!file) return;
       const entries = parseCsv(await file.text());
-      const added = entries.filter((entry) => addValue(listName, entry)).length;
+      const added = writeEntries(entries);
       event.target.value = '';
       if (added) showFlash(added + (added === 1 ? ' entry' : ' entries') + ' imported into the draft.');
       else showFlash('Everything in that file is already in the list.');
     });
-    $(prefix + '-export').addEventListener('click', () => exportCsv(listName + '.csv', lists[listName]));
+    $(prefix + '-export').addEventListener('click', () => exportCsv(filename, readValues()));
   }
-  wireCsv('kw', 'keywords');
-  wireCsv('nb', 'never');
+
+  wireCsv('kw', 'keywords.csv',
+    () => keywords.map((entry) => entry.text),
+    (entries) => {
+      const added = entries.filter((text) => {
+        if (keywords.some((entry) => entry.text.toLowerCase() === text.toLowerCase())) return false;
+        keywords.push({ text, minQty: 0, unit: '', clicks: 0, category: '', states: [] });
+        return true;
+      }).length;
+      if (added) { renderKeywords(); markDirty(); }
+      return added;
+    });
+
+  wireCsv('nb', 'negative-keywords.csv',
+    () => lists.never,
+    (entries) => entries.filter((entry) => addValue('never', entry)).length);
 
   // ---------- new buyer gate ----------
   const skipNew = $('skip-new');
@@ -815,6 +1067,7 @@ textarea{width:100%;resize:vertical;line-height:1.55}
     draftInputs.forEach((el, index) => {
       baseline.set(index, el.type === 'checkbox' || el.type === 'radio' ? (el.checked ? '1' : '') : el.value);
     });
+    baselineKeywords = JSON.parse(JSON.stringify(keywords));
     Object.keys(lists).forEach((name) => { baselineLists[name] = [...lists[name]]; });
     setDirty(false);
     showFlash('Settings saved. Purchase changes apply the next time buying starts.');
@@ -826,13 +1079,19 @@ textarea{width:100%;resize:vertical;line-height:1.55}
       else { el.value = baseline.get(index); }
     });
     threshold.value = thresholdNumber.value;
+    keywords.length = 0;
+    keywords.push(...JSON.parse(JSON.stringify(baselineKeywords)));
+    renderKeywords();
+    resetKeywordForm();
     Object.keys(lists).forEach((name) => { lists[name] = [...baselineLists[name]]; renderList(name); });
     syncMonths();
     setDirty(false);
     showFlash('Changes discarded.');
   });
 
-  ['keywords', 'never', 'area'].forEach(renderList);
+  renderKeywords();
+  renderStateOptions();
+  ['never', 'countries', 'states'].forEach(renderList);
   setDirty(false);
 })();
 </script>
